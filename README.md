@@ -1,5 +1,3 @@
-Sure! Here's a comprehensive `README.md` file that you can use to describe your project. This file includes sections for project description, setup instructions, authentication flow, and more.
-
 ```markdown
 # Secure API with JWT Authentication and CORS
 
