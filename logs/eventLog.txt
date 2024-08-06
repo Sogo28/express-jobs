@@ -1,0 +1,7 @@
+05 08 2024	22:55:56	d6da0b3d-a164-45a4-8f24-f7d4a505e036	GET	undefined	/api/users
+05 08 2024	22:56:43	af29ea09-4c89-4161-b09c-c404413beddc	GET	undefined	/api/users
+05 08 2024	22:57:23	9a6fa9d4-aad6-44d7-9149-24dcc8c34cee	POST	undefined	/api/auth
+05 08 2024	22:57:34	9d76eecd-2ae5-4b19-968e-d234e614b686	GET	undefined	/api/users
+05 08 2024	22:57:48	411a6035-78d7-4b5f-bf2c-e2d0935d1386	POST	undefined	/api/auth
+05 08 2024	22:58:54	5efc9139-7725-4879-86bc-179ef8c69dae	POST	undefined	/api/auth
+06 08 2024	09:53:51	46c16852-9858-4ee9-8337-8745013fa425	POST	undefined	/api/users
