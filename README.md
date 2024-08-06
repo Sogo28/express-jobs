@@ -16,30 +16,6 @@ This project demonstrates a secure API implementation using Express.js with JWT 
 
 ## Project Structure
 
-```bash
-src/
-├── controllers/
-│   └── authController.ts
-│   └── userController.ts
-├── middleware/
-│   └── authenticate.ts
-│   └── validate.ts
-│   └── logger.ts
-├── models/
-│   └── dao/
-│       └── userDAO.ts
-│   └── domain/
-│       └── UserSchema.ts
-├── routes/
-│   └── authRoutes.ts
-│   └── userRoutes.ts
-├── services/
-│   └── authService.ts
-├── utils/
-│   └── customError.ts
-└── app.ts
-```
-
 ## Setup Instructions
 
 ### Prerequisites
