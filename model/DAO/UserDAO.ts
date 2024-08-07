@@ -1,10 +1,11 @@
 import { PrismaClient, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { CustomError } from "../domain/CustomError";
+import { UserInputType } from "../domain/UserInputSchema";
 
 const prisma = new PrismaClient();
 
-export const createUser = async (data: User): Promise<User> => {
+export const createUser = async (data: UserInputType): Promise<User> => {
 
   const { name, email, password } = data;
 
