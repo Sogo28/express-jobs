@@ -1,4 +1,10 @@
-import { createJob as createJobDAO, getJobs as getJobsDAO, getJobById as getJobByIdDAO, updateJob as updateJobDAO } from "../model/DAO/JobDAO";
+import {
+  createJob as createJobDAO,
+  getJobs as getJobsDAO,
+  getJobById as getJobByIdDAO,
+  updateJob as updateJobDAO,
+  deleteJob as deleteJobDAO
+} from "../model/DAO/JobDAO";
 import { Job } from "@prisma/client";
 import { JobInputType } from "../model/domain/JobInputSchema";
 
@@ -27,5 +33,12 @@ export const updateJob = async (data: JobInputType, id: string): Promise<Job> =>
 
   const updatedJob = await updateJobDAO(data, id);
   return updatedJob;
+
+}
+
+export const deleteJob = async (id: string): Promise<Job> => {
+
+  const deletedJob = await deleteJobDAO(id);
+  return deletedJob;
 
 }

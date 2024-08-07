@@ -1,5 +1,4 @@
 import { PrismaClient, Job } from "@prisma/client";
-import { CustomError } from "../domain/CustomError";
 import { JobInputType } from "../domain/JobInputSchema";
 
 const prisma = new PrismaClient();
@@ -19,20 +18,18 @@ export const createJob = async (data: JobInputType): Promise<Job> => {
     }
   })
 
-  if (!newJob) throw new CustomError("Internal Server Error", 500);
   return newJob;
 
 }
 
 export const getJobById = async (id: string): Promise<Job> => {
 
-  const foundJob = await prisma.job.findUnique({
+  const foundJob = await prisma.job.findUniqueOrThrow({
     where: {
       id
     }
   })
 
-  if (!foundJob) throw new CustomError("Job not found", 404);
   return foundJob;
 
 }
@@ -46,12 +43,11 @@ export const getJobs = async (): Promise<Job[]> => {
 
 export const updateJob = async (job: JobInputType, id: string): Promise<Job> => {
 
-  const foundJob = await getJobById(id);
   const { description, location, salary, title, type } = job
 
   const updatedJob = await prisma.job.update({
     where: {
-      id: foundJob.id
+      id: id
     },
     data: {
       description,
@@ -63,6 +59,18 @@ export const updateJob = async (job: JobInputType, id: string): Promise<Job> => 
   })
 
   return updatedJob
+
+}
+
+export const deleteJob = async (id: string): Promise<Job> => {
+
+  const deletedJob = await prisma.job.delete({
+    where: {
+      id
+    }
+  })
+
+  return deletedJob;
 
 }
 

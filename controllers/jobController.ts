@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
-import { createJob as createJobService, getJobById as getJobByIdService, updateJob as updateJobService, getJobs as getJobsService } from "../services/JobServices";
-import { CustomError } from "../model/domain/CustomError";
+import {
+  createJob as createJobService,
+  getJobById as getJobByIdService,
+  getJobs as getJobsService,
+  updateJob as updateJobService,
+  deleteJob as deleteJobService
+} from "../services/JobServices";
 
 // @desc    Create a Job
-// @route   POST /api/Jobs
+// @route   POST /api/jobs
 // @access  Public
 export const createJob = async (req: Request, res: Response) => {
 
@@ -15,29 +20,24 @@ export const createJob = async (req: Request, res: Response) => {
     })
 
   } catch (error) {
-    if (error instanceof CustomError) {
-      res.status(error.status).json({ message: error.message });
-    }
-    else {
-      res.status(500).json({ message: "Internal Server Error" });
-    }
+    res.status(500).json({ message: "Internal Server Error" });
   }
 
 }
 
 // @desc    Get a Job by its id
-// @route   GET /api/Job/:id
+// @route   GET /api/jobs/:id
 // @access  Public
 export const getJob = async (req: Request, res: Response) => {
 
-  const jobId = req.params.JobId;
+  const id = req.params.id;
   try {
-    const job = await getJobByIdService(jobId);
+    const job = await getJobByIdService(id);
     res.status(200).json(job);
 
-  } catch (error) {
-    if (error instanceof CustomError) {
-      res.status(error.status).json({ message: error.message });
+  } catch (error: any) {
+    if (error.code === "P2025" || error.code === "P2023") {
+      res.status(404).json({ message: "Job not found" });
 
     } else {
       res.status(500).json({ message: "Internal Server Error" })
@@ -46,42 +46,61 @@ export const getJob = async (req: Request, res: Response) => {
 }
 
 // @desc    Get all Jobs 
-// @route   GET /api/Job/
+// @route   GET /api/jobs/
 // @access  Public
 export const getJobs = async (req: Request, res: Response) => {
   try {
     const jobs = await getJobsService();
     res.status(200).json(jobs);
 
-  } catch (error) {
-    if (error instanceof CustomError) {
-      res.status(error.status).json({ message: error.message });
-
-    } else {
-      res.status(500).json({ message: "Internal Server Error" })
-    }
+  } catch (error: any) {
+    res.status(500).json({ message: "Internal Server Error" })
   }
 }
 
 // @desc    Update a Job 
-// @route   PUT /api/Job/:id
+// @route   PUT /api/jobs/:id
 // @access  Public
 export const updateJob = async (req: Request, res: Response) => {
 
-  const jobId = req.params.JobId;
+  const id = req.params.id;
   try {
-    const updatedJob = await updateJobService(req.body, jobId);
+    const updatedJob = await updateJobService(req.body, id);
     res.status(204).json({
       message: "Job updated successfully",
       data: updatedJob
     })
 
-  } catch (error) {
-    if (error instanceof CustomError) {
-      res.status(error.status).json({ message: error.message });
+  } catch (error: any) {
+    if (error.code === "P2025" || error.code === "P2023") {
+      res.status(404).json({ message: "Job not found" });
+
+    } else {
+      res.status(500).json({ message: "Internal Server Error" })
     }
-    else {
-      res.status(500).json({ message: "Internal Server Error" });
+  }
+
+}
+
+// @desc    Delete a Job 
+// @route   DELETE /api/jobs/:id
+// @access  Public
+export const deleteJob = async (req: Request, res: Response) => {
+
+  const id = req.params.id;
+  try {
+    const deletedJob = await deleteJobService(id);
+    res.status(204).json({
+      message: "Job deleted successfully",
+      data: deletedJob
+    })
+
+  } catch (error: any) {
+    if (error.code === "P2025" || error.code === "P2023") {
+      res.status(404).json({ message: "Job not found" });
+
+    } else {
+      res.status(500).json({ message: "Internal Server Error" })
     }
   }
 

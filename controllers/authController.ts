@@ -8,7 +8,6 @@ import { CustomError } from "../model/domain/CustomError";
 export const authenticateUser = async (req: Request, res: Response) => {
 
   const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ message: "Please give an email and a password" })
 
   try {
     const { accessToken, refreshToken } = await authenticateUserService(email, password);

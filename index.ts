@@ -24,7 +24,7 @@ app.use(checkAllowedOrigins);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/jobs', jobsRouter);
-app.use('/api/company', companyRouter);
+app.use('/api/companies', companyRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running in developpment mode on port ${PORT}`);
