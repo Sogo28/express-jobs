@@ -2,6 +2,7 @@ import {
   createJob as createJobDAO,
   getJobs as getJobsDAO,
   getJobById as getJobByIdDAO,
+  getJobsByEmployer as getJobsByEmployerDAO,
   updateJob as updateJobDAO,
   deleteJob as deleteJobDAO
 } from "../model/DAO/JobDAO";
@@ -26,6 +27,13 @@ export const getJobById = async (id: string): Promise<Job> => {
 
   const job = await getJobByIdDAO(id);
   return job;
+
+}
+
+export const getJobsByEmployer = async (userId: string): Promise<Job[]> => {
+
+  const jobs = await getJobsByEmployerDAO(userId);
+  return jobs;
 
 }
 

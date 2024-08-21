@@ -41,6 +41,17 @@ export const getJobs = async (): Promise<Job[]> => {
 
 }
 
+export const getJobsByEmployer = async (userId: string): Promise<Job[]> => {
+
+  const jobs = await prisma.job.findMany({
+    where: {
+      userId
+    }
+  })
+
+  return jobs;
+}
+
 export const updateJob = async (job: JobInputType, id: string): Promise<Job> => {
 
   const { description, location, salary, title, type } = job

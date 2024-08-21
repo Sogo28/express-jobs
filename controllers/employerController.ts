@@ -1,0 +1,20 @@
+import { Request, Response } from "express";
+import {
+  getJobsByEmployer as getJobsByEmployerService
+} from "../services/JobServices";
+// @desc    Get all Jobs 
+// @route   GET /api/jobs/
+// @access  Public
+export const getJobs = async (req: Request, res: Response) => {
+
+  const id = req.params.id;
+
+  try {
+    const jobs = await getJobsByEmployerService(id);
+    res.status(200).json(jobs);
+
+  } catch (error: any) {
+    res.status(500).json({ message: "Internal Server Error" })
+  }
+}
+

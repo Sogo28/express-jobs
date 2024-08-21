@@ -8,6 +8,7 @@ import { corsOptions } from "./config/corsOptions";
 import { checkAllowedOrigins } from "./middlewares/checkAllowedOrigins";
 import jobsRouter from "./routes/jobs";
 import companyRouter from "./routes/company";
+import employerRouter from "./routes/employer";
 
 const PORT = process.env.PORT || 8000;
 
@@ -25,6 +26,7 @@ app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/jobs', jobsRouter);
 app.use('/api/companies', companyRouter);
+app.use('/api/employers', employerRouter)
 
 app.listen(PORT, () => {
   console.log(`Server running in developpment mode on port ${PORT}`);

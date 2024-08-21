@@ -1,20 +1,20 @@
 import bcrypt from "bcrypt";
-import { getUserByEmail } from "../model/DAO/UserDAO";
+import { getUserByEmail, getUserById } from "../model/DAO/UserDAO";
 import jwt from "jsonwebtoken";
 import { CustomError } from "../model/domain/CustomError";
 
 const JWT_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-const generateAccessToken = (user: { email: string }) => {
-  return jwt.sign(user, JWT_SECRET as string, { expiresIn: '15m' });
+const generateAccessToken = (user: { id: string }) => {
+  return jwt.sign(user, JWT_SECRET as string, { expiresIn: '30s' });
 };
 
-const generateRefreshToken = (user: { email: string }) => {
+const generateRefreshToken = (user: { id: string }) => {
   return jwt.sign(user, REFRESH_TOKEN_SECRET as string, { expiresIn: '7d' });
 };
 
-export const authenticateUser = async (email: string, password: string): Promise<{ accessToken: string, refreshToken: string }> => {
+export const authenticateUser = async (email: string, password: string): Promise<{ accessToken: string, refreshToken: string, user: { id: string } }> => {
 
   const foundUser = await getUserByEmail(email);
 
@@ -22,23 +22,38 @@ export const authenticateUser = async (email: string, password: string): Promise
   if (!passwordMatches) throw new CustomError("Invalid Email or Password", 400);
 
   // Creating JWT
-  const accessToken = generateAccessToken({ email: foundUser.email });
-  const refreshToken = generateRefreshToken({ email: foundUser.email });
+  const accessToken = generateAccessToken({ id: foundUser.id });
+  const refreshToken = generateRefreshToken({ id: foundUser.id });
 
-  return ({ accessToken, refreshToken });
+
+  return ({
+    accessToken, refreshToken, user: { id: foundUser.id }
+  });
 
 }
 
 export const refreshToken = async (token: string) => {
   try {
-    const decoded = jwt.verify(token, REFRESH_TOKEN_SECRET as string) as { email: string };
+    const decoded = jwt.verify(token, REFRESH_TOKEN_SECRET as string) as { id: string };
 
-    const newAccessToken = generateAccessToken({ email: decoded.email });
-    const newRefreshToken = generateRefreshToken({ email: decoded.email });
+    const newAccessToken = generateAccessToken({ id: decoded.id });
+    const newRefreshToken = generateRefreshToken({ id: decoded.id });
 
-    return ({ newAccessToken, newRefreshToken });
+    return ({ newAccessToken, newRefreshToken, decoded });
 
   } catch (error) {
     throw new CustomError("Invalid Refresh Token", 403);
+  }
+}
+
+export const checkAuth = async (token: string) => {
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string) as { id: string };
+
+    const user = await getUserById(decoded.id); // Adjust to your user-fetching logic
+    return user;
+
+  } catch (error) {
+    throw new CustomError("Invalid refresh Token", 403)
   }
 }
