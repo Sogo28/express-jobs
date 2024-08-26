@@ -42,7 +42,7 @@ export const refreshToken = async (token: string) => {
     return ({ newAccessToken, newRefreshToken, decoded });
 
   } catch (error) {
-    throw new CustomError("Invalid Refresh Token", 403);
+    throw new CustomError("Invalid Refresh Token, while attempting to refresh", 403);
   }
 }
 
@@ -54,6 +54,6 @@ export const checkAuth = async (token: string) => {
     return user;
 
   } catch (error) {
-    throw new CustomError("Invalid refresh Token", 403)
+    throw new CustomError("Invalid refresh Token, while checking auth", 403)
   }
 }

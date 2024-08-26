@@ -84,7 +84,7 @@ export const checkAuth = async (req: Request, res: Response) => {
   const token = req.headers.authorization?.split(" ")[1]; // Extract the token from the Authorization header
 
   if (!token) {
-    return res.status(401).json({ message: "No token provided" });
+    return res.status(401).json({ message: "No token provided lil nigga." });
   }
 
   try {
@@ -96,7 +96,12 @@ export const checkAuth = async (req: Request, res: Response) => {
 
     res.json({ user }); // Return user data
   } catch (error) {
-    res.status(401).json({ message: "Invalid or expired token" });
+    if (error instanceof CustomError) {
+      res.status(error.status).json({ message: error.message });
+    }
+    else {
+      res.status(500).json({ message: "Internal server error" })
+    }
   }
 }
 

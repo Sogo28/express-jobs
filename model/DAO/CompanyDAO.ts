@@ -34,6 +34,17 @@ export const getCompanyById = async (id: string): Promise<Company> => {
 
 }
 
+export const getCompanyByUserId = async (userId: string): Promise<Company> => {
+
+  const foundCompany = await prisma.company.findUniqueOrThrow({
+    where: {
+      userId
+    }
+  })
+
+  return foundCompany;
+}
+
 export const getCompanies = async (): Promise<Company[]> => {
 
   const companies = await prisma.company.findMany();
