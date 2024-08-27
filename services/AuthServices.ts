@@ -18,7 +18,7 @@ export const authenticateUser = async (email: string, password: string): Promise
 
   const foundUser = await getUserByEmail(email);
 
-  const passwordMatches = bcrypt.compare(password, foundUser.password);
+  const passwordMatches = await bcrypt.compare(password, foundUser.password);
   if (!passwordMatches) throw new CustomError("Invalid Email or Password", 400);
 
   // Creating JWT

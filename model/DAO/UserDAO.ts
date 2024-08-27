@@ -1,6 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { UserInputType } from "../domain/UserInputSchema";
+import { CustomError } from "model/domain/CustomError";
 
 const prisma = new PrismaClient();
 

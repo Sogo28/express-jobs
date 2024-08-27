@@ -6,6 +6,7 @@ import {
   updateUser as updateUserService,
   deleteUser as deleteUserService
 } from "../services/UserServices";
+import { CustomError } from "model/domain/CustomError";
 
 // @desc    Create a user
 // @route   POST /api/users
@@ -19,8 +20,15 @@ export const createUser = async (req: Request, res: Response) => {
       data: newUser
     })
 
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+  } catch (error: any) {
+
+    if (error instanceof CustomError) {
+      return res.status(error.status).json({ message: error.message })
+    }
+    else {
+      console.log(error);
+      res.status(500).json({ message: 'Internal Server Error', error: error });
+    }
   }
 
 }
